@@ -22,7 +22,7 @@ function App() {
     );
     let apiData = await response.json();
     setData(apiData);
-    console.log(data); //works perfectly
+    console.log(apiData); //works perfectly
   };
 
   return (
@@ -64,32 +64,47 @@ function App() {
       {/* {data ? data.map(() => data[0]) : <p className="text-red"> Loading...</p>} */}
       {/* <div className="text-red">{data[0]}</div> */}
 
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-5xl px-5">
         {data &&
           data.map((data) => (
             <>
               <div key={data.id}>
-                <div>
-                  <div className="flex flex-col md:flex-row md:justify-between">
-                    <div>
-                      <img src={data.image} alt="" />
-                    </div>
-                    <div className="flex flex-col lg:flex-row">
-                      <div>
-                        <h1>
-                          {/* title */}
-                          {data.title}
-                        </h1>
-                        <p>
-                          {/* genre */}
-                          {data.genre}
-                        </p>
-                      </div>
-                      <div className="text-white ">
-                        <p>${data.price}</p>
-                      </div>
-                    </div>
+                <div
+                  className="flex flex-col lg:flex-row 
+                mb-10 rounded-lg bg-[#17202D] "
+                >
+                  <div>
+                    <img
+                      src={data.image}
+                      className="rounded-tl-2xl rounded-bl-2xl 
+                       w-full"
+                      height={599}
+                      alt=""
+                    />
                   </div>
+
+                  <a
+                    href={data.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex flex-col p-5 lg:p-0 lg:pt-[53px] lg:pl-[51px] 
+                    rounded-tr-2xl rounded-br-2xl"
+                  >
+                    <div>
+                      <h1 className="text-white font-semibold text-[28px]  ">
+                        {data.title}
+                      </h1>
+                      <ul className=" text-white">
+                        {data.tags &&
+                          data.tags.map((tag) => {
+                            return <li className="inline mr-4">{tag}</li>;
+                          })}
+                      </ul>
+                    </div>
+                    <div className="text-white font-bold text-[40px] lg:text-5xl self-end">
+                      <p>${data.price}</p>
+                    </div>
+                  </a>
                 </div>
               </div>
             </>
