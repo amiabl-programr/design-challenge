@@ -1,6 +1,7 @@
 // import { data } from "autoprefixer";
 // import { data } from "autoprefixer";
 import React, { useState, useEffect } from "react";
+
 import "./App.css";
 
 function App() {
@@ -9,20 +10,24 @@ function App() {
   useEffect(() => {
     getData();
   }, []);
+
   const getData = async () => {
-    console.log("yep");
-    let response = await fetch(
-      "https://gqkuommdmfzmwkzdewma.supabase.co/rest/v1/steam?select=*",
-      {
-        headers: {
-          apikey: `${process.env.REACT_APP_SUPABASE_KEY}`,
-          Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_AUTH}`,
-        },
-      }
-    );
-    let apiData = await response.json();
-    setData(apiData);
-    console.log(apiData); //works perfectly
+    try {
+      let response = await fetch(
+        `https://gqkuommdmfzmwkzdewma.supabase.co/rest/v1/steam?select=*`,
+        {
+          headers: {
+            apikey: `${process.env.REACT_APP_SUPABASE_KEY}`,
+            Authorization: `Bearer ${process.env.REACT_APP_SUPABASE_AUTH}`,
+          },
+        }
+      );
+      let apiData = await response.json();
+      setData((prevData) => [...prevData, ...apiData]); // Append new data to existing data
+      console.log(apiData); //works perfectly
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   return (
@@ -66,18 +71,18 @@ function App() {
 
       <div className="mx-auto max-w-5xl px-5">
         {data &&
-          data.map((data) => (
+          data.slice(0, 20).map((data) => (
             <>
               <div key={data.id}>
                 <div
                   className="flex flex-col lg:flex-row 
-                mb-10 rounded-lg bg-[#17202D] "
+                mb-10 rounded-3xl bg-[#17202D] lg:pr-[34px]"
                 >
                   <div>
                     <img
                       src={data.image}
-                      className="rounded-tl-2xl rounded-bl-2xl 
-                       w-full"
+                      className="rounded-tl-3xl rounded-tr-3xl lg:rounded-tr-none lg:rounded-bl-3xl 
+                       w-full h-full"
                       height={599}
                       alt=""
                     />
@@ -88,20 +93,31 @@ function App() {
                     target="_blank"
                     rel="noreferrer"
                     className="flex flex-col p-5 lg:p-0 lg:pt-[53px] lg:pl-[51px] 
-                    rounded-tr-2xl rounded-br-2xl"
+                    rounded-tr-2xl rounded-br-2xl pr-5 "
                   >
                     <div>
                       <h1 className="text-white font-semibold text-[28px]  ">
                         {data.title}
                       </h1>
-                      <ul className=" text-white">
+                      <ul className=" text-white my-[18px]">
                         {data.tags &&
                           data.tags.map((tag) => {
-                            return <li className="inline mr-4">{tag}</li>;
+                            return (
+                              <li
+                                className="inline mr-4 font-normal
+                            text-xl"
+                              >
+                                {tag}
+                              </li>
+                            );
                           })}
                       </ul>
+                      <hr className="bg-[#214B6B] h-[10px] w-[127px] border-none rounded-[20px]" />
                     </div>
-                    <div className="text-white font-bold text-[40px] lg:text-5xl self-end">
+                    <div
+                      className="text-white font-bold text-[40px] lg:text-5xl self-end pb-5
+                    lg:pb-9"
+                    >
                       <p>${data.price}</p>
                     </div>
                   </a>
