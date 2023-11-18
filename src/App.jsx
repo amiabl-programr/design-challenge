@@ -1,7 +1,15 @@
-// import { data } from "autoprefixer";
-// import { data } from "autoprefixer";
 import React, { useState, useEffect } from "react";
 
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+// import required modules
+import { Pagination, Autoplay } from "swiper/modules";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/pagination";
+
+import "./styles.css";
 import "./App.css";
 
 function App() {
@@ -45,29 +53,47 @@ function App() {
         </nav>
       </header>
 
-      {/* slider */}
+      <Swiper
+        slidesPerView={"auto"}
+        centeredSlides={true}
+        spaceBetween={30}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Autoplay, Pagination]}
+        className="mySwiper"
+      >
+        {data &&
+          data.slice(0, 6).map((item) => {
+            return (
+              <SwiperSlide className="rounded-3xl">
+                <img src={item.image} className="rounded-3xl" alt="slider" />
+              </SwiperSlide>
+            );
+          })}
+      </Swiper>
 
-      <div>{/* slider---checkout swiperjs*/}</div>
-      {/* slider */}
-
-      <div>
+      <div className="mt-[54px]">
         <h1>
           <span className="h-1 w-8 text-[#204b6b]-300">-</span>
           <span className="text-white">New &amp; Trending</span>
           <span className="">-</span>
         </h1>
-      </div>
 
-      {/* {data && data.map(() => `<div> ${data[0].id} </div>`)} */}
-      {/* {data > 0 && (
         <div>
-          {data.map((datas) => {
-            <img src={datas.image} alt="" />;
-          })}
+          <label htmlFor="">
+            <input type="text" placeholder="Search" />
+          </label>
+
+          <select name="" id="">
+            <option value="Price">Price</option>
+          </select>
         </div>
-      )} */}
-      {/* {data ? data.map(() => data[0]) : <p className="text-red"> Loading...</p>} */}
-      {/* <div className="text-red">{data[0]}</div> */}
+      </div>
 
       <div className="mx-auto max-w-5xl px-5">
         {data &&
