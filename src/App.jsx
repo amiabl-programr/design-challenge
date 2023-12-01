@@ -14,6 +14,30 @@ import "./App.css";
 
 function App() {
   const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
+  //function to handle search
+  const handleSearch = (e) => {
+    let value = e.target.value.toLowerCase();
+    setSearch(value);
+    let result = [];
+    console.log(value);
+    result = data.filter((data) => {
+      return data.title.toLowerCase().search(value) !== -1;
+    });
+    console.log(result);
+    setFilteredData(result);
+    console.log(filteredData);
+  };
+
+  useEffect(() => {
+    if (search === "") {
+      setFilteredData(data);
+    } else {
+      return;
+    }
+  }, [search]);
 
   useEffect(() => {
     getData();
@@ -84,13 +108,30 @@ function App() {
           <span className="">-</span>
         </h1>
 
-        <div>
-          <label htmlFor="">
-            <input type="text" placeholder="Search" />
+        <div className="px-5 flex gap-3 flex-col lg:flex-row lg:justify-between">
+          <label>
+            <input
+              name="search"
+              type="text"
+              className="bg-[#1A3A53] text-white rounded-3xl pl-5 py-2 outline-none w-full"
+              placeholder="Search"
+              onChange={handleSearch}
+              value={search}
+            />
           </label>
 
-          <select name="" id="">
-            <option value="Price">Price</option>
+          <select
+            name=""
+            id=""
+            className="bg-[#1A3A53] text-white px-5 rounded-3xl pl-5 py-2 outline-none"
+          >
+            Sort by:
+            <option
+              value="Price"
+              // className="bg-[#1A3A53] rounded-3xl pl-5 py-2"
+            >
+              Price
+            </option>
           </select>
         </div>
       </div>
@@ -130,7 +171,7 @@ function App() {
                           data.tags.map((tag) => {
                             return (
                               <li
-                                className="inline mr-4 font-normal
+                                className="inline-block mr-4 font-normal
                             text-xl"
                               >
                                 {tag}
